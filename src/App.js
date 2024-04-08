@@ -5,6 +5,7 @@ import Home from "./components/home";
 import AboutUs from "./components/about";
 import Users from "./components/users";
 import Navbar from './components/navbar';
+import NotFound from "./components/notFound";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/users" element={<Users />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
