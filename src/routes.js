@@ -7,6 +7,8 @@ const Login = lazy(() => import('./components/login'))
 const AuthProfile = lazy(() => import('./components/authProfile'))
 const AboutUs = lazy(() => import('./components/about'))
 const NotFound = lazy(() => import('./components/notFound'))
+const RepoDetail = lazy(() => import('./components/repoDetail'))
+
 
 export const appRoutes = [
     {
@@ -42,6 +44,11 @@ export const appRoutes = [
     {
         path: "/about",
         component: AboutUs,
+        requiresAuth: false
+    },
+    {
+        path: "/repo-detail/:name/:username",
+        component: RepoDetail,
         requiresAuth: false
     },
     {
