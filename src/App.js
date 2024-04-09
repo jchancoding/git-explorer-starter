@@ -18,7 +18,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Navbar />}>
+        <Route path="/" element={<Navbar isLogged={isLogged} />}>
           <Route exact path="/" element={<Home />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/users" element={<Users />} />
