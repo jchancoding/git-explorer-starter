@@ -1,16 +1,8 @@
 import "./App.css";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
-import Home from "./components/home";
 import React, { useState, lazy, Suspense } from "react";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
-
-const Users = lazy(() => import('./components/users'))
-const UserProfile = lazy(() => import('./components/userProfile'))
-const SearchUser = lazy(() => import('./components/searchUser'))
-const Login = lazy(() => import('./components/login'))
-const AuthProfile = lazy(() => import('./components/authProfile'))
-const AboutUs = lazy(() => import('./components/about'))
-const NotFound = lazy(() => import('./components/notFound'))
+import { appRoutes } from "./routes";
 
 function App() {
   const [username, setUsername] = useState("");
@@ -28,28 +20,31 @@ function App() {
         >
           <Suspense fallback={() => <h1>Loading...</h1>}>
             <Routes Location={location}>
-              <Route exact path="/" element={<Home />} />
-              <Route path="/about" element={<AboutUs />} />
-              <Route path="/users" element={<Users />} />
-              <Route path="/users/user/:username" element={<UserProfile />} />
-              <Route path="/search" element={<SearchUser />} />
-              <Route
-                path="/login"
-                element={
-                  <Login setIsLogged={setIsLogged} setUsername={setUsername} />
+              {appRoutes.map((route) => {
+                if (route.requiresAuth && !isLogged) {
+                  return (
+                    <Route
+                      path={route.path}
+                      element={<Navigate to="/login" />}
+                    />
+                  );
+                } else {
+                  return (
+                    <Route
+                      key={route.path}
+                      exact
+                      path={route.path}
+                      element={
+                        <route.component
+                          setIsLogged={setIsLogged}
+                          setUsername={setUsername}
+                          username={username}
+                        />
+                      }
+                    />
+                  );
                 }
-              />
-              <Route
-                path="/authprofile"
-                element={
-                  isLogged ? (
-                    <AuthProfile username={username} />
-                  ) : (
-                    <Navigate replace to={"/login"} />
-                  )
-                }
-              />
-              <Route path="*" element={<NotFound />} />
+              })}
             </Routes>
           </Suspense>
         </CSSTransition>
